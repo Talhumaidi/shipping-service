@@ -1,64 +1,97 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+Steps to run the code:
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+`NOTE:` Please make sure that the ports `3306` and `8000` are not used.
 
-## About Laravel
+1 - install git
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+2 - run `git clone https://github.com/Talhumaidi/shipping-service.git`
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+3 - cd `/path/to/shipping-service`
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+4 - run this command `cp .env.example .env`
 
-## Learning Laravel
+5 - modify the `DB` environment variables in the `.env` file:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+`DB_CONNECTION=mysql`\
+`DB_HOST=db`\
+`DB_PORT=3306`\
+`DB_DATABASE=shipping_service`\
+`DB_USERNAME=root`\
+`DB_PASSWORD=root`
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+6 - Install `docker` & `docker-compose` on your machine.
 
-## Laravel Sponsors
+7 - run `docker-compose build`
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+8 - run `docker-composer up -d`
 
-### Premium Partners
+9 - run `docker ps` and get the `main` container id
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+# please wait for 1 minute at least before doing these two steps
 
-## Contributing
+10 - run `docker exec -it {main_container_id} /bin/sh`
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+11 - run `php artisan migrate:fresh --seed`
 
-## Code of Conduct
+Now our database is ready and the application is hosted on `0.0.0.0:8000`
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+**APIs**
+----
 
-## Security Vulnerabilities
+**1 - creating a shipment:**
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+* **URL**
 
-## License
+  `/api/shipmpent`
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+* **Method:**
+
+  `POST`
+
+* **Data Params**
+
+  **Required:**
+
+  `carrier_id=[required|string|in:fedex_air,fedex_groud,ups_express,ups_2_day]`
+  `width=[required|numeric|max:30.48]` =>  Unit of measurement is centimeters.
+  `length=[required|numeric|max:45.72]` => Unit of measurement is centimeters.
+  `height=[required|numeric|max:20.32]` => Unit of measurement is centimeters.
+
+* **Sample Success Response:**
+
+    * **Code:** 201
+      **Content:** `{
+      "message": "Your shipment request has been created successfully!",
+      "data": {
+      "uuid": "3b90e925-8b95-4406-bf64-19c39fc7c80e"
+      }
+      }`
+
+* **Sample Error Responses:**
+    * **Code:** 422
+      **Content:** `{
+      "message": "The given data was invalid.",
+      "errors": {
+      "carrier_id": [
+      "The selected carrier id is invalid."
+      ]
+      }
+      }`
+
+    * **Code:** 422
+      **Content:** `{
+      "message": "The given data was invalid.",
+      "errors": {
+      "width": [
+      "The width may not be greater than 30.48 cm"
+      ],
+      "length": [
+      "The length may not be greater than 45.72 cm"
+      ]
+      }
+      }`
+
+* **TODOs:**
+  1 - Accept a new parameter `dimenstions_unit_of_measurement` and make the necessary conversions in the shipping service.
+
+  2 - Accept the source & destination of the package  
