@@ -59,7 +59,7 @@ Now our database is ready and the application is hosted on `0.0.0.0:8000`
 
 * **Sample Success Response:**
 
-    * **Code:** 201
+    * **Code:** `201`\
       **Content:** `{
       "message": "Your shipment request has been created successfully!",
       "data": {
@@ -68,7 +68,7 @@ Now our database is ready and the application is hosted on `0.0.0.0:8000`
       }`
 
 * **Sample Error Responses:**
-    * **Code:** 422
+    * **Code:** `422`\
       **Content:** `{
       "message": "The given data was invalid.",
       "errors": {
@@ -78,7 +78,7 @@ Now our database is ready and the application is hosted on `0.0.0.0:8000`
       }
       }`
 
-    * **Code:** 422
+    * **Code:** `422`\
       **Content:** `{
       "message": "The given data was invalid.",
       "errors": {
@@ -91,7 +91,7 @@ Now our database is ready and the application is hosted on `0.0.0.0:8000`
       }
       }`
 
-* **TODOs:**
+* **TODOs:**\
   1 - Accept a new parameter `dimenstions_unit_of_measurement` and make the necessary conversions in the shipping service.
 
   2 - Accept the source & destination of the package  
