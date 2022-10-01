@@ -10,9 +10,9 @@ class ShipmentRequest extends FormRequest
     {
         return [
             'carrier_id' => 'required|string|in:fedex_air,fedex_groud,ups_express,ups_2_day',
-            'package.width' => ['required', 'numeric'],
-            'package.length' => ['required', 'numeric'],
-            'package.height' => ['required', 'numeric']
+            'width' => ['required', 'numeric'],
+            'length' => ['required', 'numeric'],
+            'height' => ['required', 'numeric']
         ];
     }
 }

@@ -17,9 +17,9 @@ class ShipmentController extends Controller
     public function store(ShipmentRequest $request)
     {
         $this->carrierPayloadDto = (new CarrierPayloadDto())
-            ->setHeight($request->input('package.height'))
-            ->setLength($request->input('package.length'))
-            ->setWidth($request->input('package.width'));
+            ->setHeight($request->input('height'))
+            ->setLength($request->input('length'))
+            ->setWidth($request->input('width'));
 
         $this->carrier = (new CarrierResolver($request->input('carrier_id')))
                 ->resolve($this->carrierPayloadDto);

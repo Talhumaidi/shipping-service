@@ -27,11 +27,9 @@ class ShipmentControllerTest extends TestCase
     {
         $this->post('/api/shipment', [
             'carrier_id' => 'ups_express',
-            'package' => [
-                'width' => 5,
-                'length' => 5,
-                'height' => 5
-            ]
+            'width' => 5,
+            'length' => 5,
+            'height' => 5
         ]);
 
         $this->assertEquals(Shipment::first()->carrier_id, UpsExpress::CARRIER_ID);
@@ -42,11 +40,9 @@ class ShipmentControllerTest extends TestCase
     {
         $this->post('/api/shipment', [
             'carrier_id' => 'ups_2_day',
-            'package' => [
-                'width' => 5,
-                'length' => 5,
-                'height' => 5
-            ]
+            'width' => 5,
+            'length' => 5,
+            'height' => 5
         ]);
 
         $this->assertEquals(Shipment::first()->carrier_id, Ups2Day::CARRIER_ID);
@@ -57,11 +53,9 @@ class ShipmentControllerTest extends TestCase
     {
         $this->post('/api/shipment', [
             'carrier_id' => 'fedex_air',
-            'package' => [
-                'width' => 5,
-                'length' => 5,
-                'height' => 5
-            ]
+            'width' => 5,
+            'length' => 5,
+            'height' => 5
         ]);
 
         $this->assertEquals(Shipment::first()->carrier_id, FedexAir::CARRIER_ID);
@@ -72,11 +66,9 @@ class ShipmentControllerTest extends TestCase
     {
         $this->post('/api/shipment', [
             'carrier_id' => 'fedex_groud',
-            'package' => [
-                'width' => 5,
-                'length' => 5,
-                'height' => 5
-            ]
+            'width' => 5,
+            'length' => 5,
+            'height' => 5
         ]);
 
         $this->assertEquals(Shipment::first()->carrier_id, FedexGroud::CARRIER_ID);
@@ -89,11 +81,9 @@ class ShipmentControllerTest extends TestCase
 
         $this->post('/api/shipment', [
             'carrier_id' => 'wrong_carrier_id',
-            'package' => [
-                'width' => 5,
-                'length' => 5,
-                'height' => 5
-            ]
+            'width' => 5,
+            'length' => 5,
+            'height' => 5
         ]);
     }
 
@@ -104,11 +94,9 @@ class ShipmentControllerTest extends TestCase
 
         $this->post('/api/shipment', [
             'carrier_id' => 'ups_express',
-            'package' => [
-                'width' => UnitsOfMeasurement::fromInch2Cm(UpsExpress::MAX_WIDTH_INCH) + 1,
-                'length' => UnitsOfMeasurement::fromInch2Cm(UpsExpress::MAX_LENGTH_INCH),
-                'height' => UnitsOfMeasurement::fromInch2Cm(UpsExpress::MAX_HEIGHT_INCH),
-            ]
+            'width' => UnitsOfMeasurement::fromInch2Cm(UpsExpress::MAX_WIDTH_INCH) + 1,
+            'length' => UnitsOfMeasurement::fromInch2Cm(UpsExpress::MAX_LENGTH_INCH),
+            'height' => UnitsOfMeasurement::fromInch2Cm(UpsExpress::MAX_HEIGHT_INCH),
         ]);
     }
 
@@ -119,11 +107,9 @@ class ShipmentControllerTest extends TestCase
 
         $this->post('/api/shipment', [
             'carrier_id' => 'ups_2_day',
-            'package' => [
-                'width' => UnitsOfMeasurement::fromInch2Cm(Ups2Day::MAX_WIDTH_INCH),
-                'length' => UnitsOfMeasurement::fromInch2Cm(Ups2Day::MAX_LENGTH_INCH),
-                'height' => UnitsOfMeasurement::fromInch2Cm(Ups2Day::MAX_HEIGHT_INCH) + 5,
-            ]
+            'width' => UnitsOfMeasurement::fromInch2Cm(Ups2Day::MAX_WIDTH_INCH),
+            'length' => UnitsOfMeasurement::fromInch2Cm(Ups2Day::MAX_LENGTH_INCH),
+            'height' => UnitsOfMeasurement::fromInch2Cm(Ups2Day::MAX_HEIGHT_INCH) + 5,
         ]);
     }
 
@@ -134,11 +120,9 @@ class ShipmentControllerTest extends TestCase
 
         $this->post('/api/shipment', [
             'carrier_id' => 'fedex_air',
-            'package' => [
-                'width' => UnitsOfMeasurement::fromInch2Cm(FedexAir::MAX_WIDTH_INCH),
-                'length' => UnitsOfMeasurement::fromInch2Cm(FedexAir::MAX_LENGTH_INCH),
-                'height' => UnitsOfMeasurement::fromInch2Cm(FedexAir::MAX_HEIGHT_INCH) + 1,
-            ]
+            'width' => UnitsOfMeasurement::fromInch2Cm(FedexAir::MAX_WIDTH_INCH),
+            'length' => UnitsOfMeasurement::fromInch2Cm(FedexAir::MAX_LENGTH_INCH),
+            'height' => UnitsOfMeasurement::fromInch2Cm(FedexAir::MAX_HEIGHT_INCH) + 1,
         ]);
     }
 }
