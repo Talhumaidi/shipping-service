@@ -1,0 +1,144 @@
+<?php
+
+namespace Tests\Feature;
+
+use App\Carriers\FedexAir;
+use App\Carriers\FedexGroud;
+use App\Carriers\Ups2Day;
+use App\Carriers\UpsExpress;
+use App\Helpers\UnitsOfMeasurement;
+use App\Models\Shipment;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
+
+class ShipmentControllerTest extends TestCase
+{
+    use DatabaseMigrations;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->withoutExceptionHandling();
+    }
+
+    /** @test */
+    public function it_can_create_ups_express_shipment()
+    {
+        $this->post('/api/shipment', [
+            'carrier_id' => 'ups_express',
+            'package' => [
+                'width' => 5,
+                'length' => 5,
+                'height' => 5
+            ]
+        ]);
+
+        $this->assertEquals(Shipment::first()->carrier_id, UpsExpress::CARRIER_ID);
+    }
+
+    /** @test */
+    public function it_can_create_ups_2_day_shipment()
+    {
+        $this->post('/api/shipment', [
+            'carrier_id' => 'ups_2_day',
+            'package' => [
+                'width' => 5,
+                'length' => 5,
+                'height' => 5
+            ]
+        ]);
+
+        $this->assertEquals(Shipment::first()->carrier_id, Ups2Day::CARRIER_ID);
+    }
+
+    /** @test */
+    public function it_can_create_fedex_air_shipment()
+    {
+        $this->post('/api/shipment', [
+            'carrier_id' => 'fedex_air',
+            'package' => [
+                'width' => 5,
+                'length' => 5,
+                'height' => 5
+            ]
+        ]);
+
+        $this->assertEquals(Shipment::first()->carrier_id, FedexAir::CARRIER_ID);
+    }
+
+    /** @test */
+    public function it_can_create_fedex_groud_shipment()
+    {
+        $this->post('/api/shipment', [
+            'carrier_id' => 'fedex_groud',
+            'package' => [
+                'width' => 5,
+                'length' => 5,
+                'height' => 5
+            ]
+        ]);
+
+        $this->assertEquals(Shipment::first()->carrier_id, FedexGroud::CARRIER_ID);
+    }
+
+    /** @test */
+    public function it_can_validate_if_wrong_carrier_id_is_sent()
+    {
+        $this->expectException(ValidationException::class);
+
+        $this->post('/api/shipment', [
+            'carrier_id' => 'wrong_carrier_id',
+            'package' => [
+                'width' => 5,
+                'length' => 5,
+                'height' => 5
+            ]
+        ]);
+    }
+
+    /** @test */
+    public function it_can_validate_if_ups_express_dimensions_are_oversize()
+    {
+        $this->expectException(ValidationException::class);
+
+        $this->post('/api/shipment', [
+            'carrier_id' => 'ups_express',
+            'package' => [
+                'width' => UnitsOfMeasurement::fromInch2Cm(UpsExpress::MAX_WIDTH_INCH) + 1,
+                'length' => UnitsOfMeasurement::fromInch2Cm(UpsExpress::MAX_LENGTH_INCH),
+                'height' => UnitsOfMeasurement::fromInch2Cm(UpsExpress::MAX_HEIGHT_INCH),
+            ]
+        ]);
+    }
+
+    /** @test */
+    public function it_can_validate_if_ups_2_day_dimensions_are_oversize()
+    {
+        $this->expectException(ValidationException::class);
+
+        $this->post('/api/shipment', [
+            'carrier_id' => 'ups_2_day',
+            'package' => [
+                'width' => UnitsOfMeasurement::fromInch2Cm(Ups2Day::MAX_WIDTH_INCH),
+                'length' => UnitsOfMeasurement::fromInch2Cm(Ups2Day::MAX_LENGTH_INCH),
+                'height' => UnitsOfMeasurement::fromInch2Cm(Ups2Day::MAX_HEIGHT_INCH) + 5,
+            ]
+        ]);
+    }
+
+    /** @test */
+    public function it_can_validate_if_fedex_air_dimensions_are_oversize()
+    {
+        $this->expectException(ValidationException::class);
+
+        $this->post('/api/shipment', [
+            'carrier_id' => 'fedex_air',
+            'package' => [
+                'width' => UnitsOfMeasurement::fromInch2Cm(FedexAir::MAX_WIDTH_INCH),
+                'length' => UnitsOfMeasurement::fromInch2Cm(FedexAir::MAX_LENGTH_INCH),
+                'height' => UnitsOfMeasurement::fromInch2Cm(FedexAir::MAX_HEIGHT_INCH) + 1,
+            ]
+        ]);
+    }
+}
