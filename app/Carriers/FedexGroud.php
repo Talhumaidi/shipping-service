@@ -7,7 +7,7 @@ use App\Helpers\UnitsOfMeasurement;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
-class FedexGroud implements Carrier
+class FedexGroud extends Carrier
 {
     const CARRIER_ID = 'fedexGroud';
     const MAX_WIDTH_INCH = 12;
@@ -24,12 +24,6 @@ class FedexGroud implements Carrier
     public function getCarrierId(): string
     {
         return self::CARRIER_ID;
-    }
-
-    public function ship(array $payload): string
-    {
-        // Make API call
-        return Str::uuid(); // some random string
     }
 
     public function translatePayload(): array

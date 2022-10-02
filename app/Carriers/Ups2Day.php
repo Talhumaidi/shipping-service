@@ -7,7 +7,7 @@ use App\Helpers\UnitsOfMeasurement;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
-class Ups2Day implements Carrier
+class Ups2Day extends Carrier
 {
     const CARRIER_ID = 'UPS2DAY';
     const MAX_WIDTH_INCH = 12;
@@ -24,12 +24,6 @@ class Ups2Day implements Carrier
     public function getCarrierId(): string
     {
         return self::CARRIER_ID;
-    }
-
-    public function ship(array $payload): string
-    {
-        // Make API call
-        return Str::uuid(); // some random string
     }
 
     public function translatePayload(): array

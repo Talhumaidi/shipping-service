@@ -3,16 +3,26 @@
 namespace App\Carriers;
 
 use App\DTO\CarrierPayloadDto;
+use Illuminate\Support\Str;
 
-interface Carrier
+abstract class Carrier
 {
-    function __construct(CarrierPayloadDto $carrierPayloadDto);
+    abstract function __construct(CarrierPayloadDto $carrierPayloadDto);
 
-    function validationRules(): array;
+    abstract function validationRules(): array;
 
-    function translatePayload(): array;
+    abstract function translatePayload(): array;
 
-    function ship(array $payload): string;
+    abstract function getCarrierId(): string;
 
-    function getCarrierId(): string;
+    public function ship(): string
+    {
+        $payload = $this->translatePayload();
+
+        // Some wrapper around the SDK to call
+        // sth like $this->carrierSdk()->ship($payload)
+
+        return Str::uuid();
+    }
+
 }

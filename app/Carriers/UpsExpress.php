@@ -7,7 +7,7 @@ use App\Helpers\UnitsOfMeasurement;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
-class UpsExpress implements Carrier
+class UpsExpress extends Carrier
 {
     const CARRIER_ID = 'UPSExpress';
     const MAX_WIDTH_INCH = 12;
@@ -24,12 +24,6 @@ class UpsExpress implements Carrier
     public function getCarrierId(): string
     {
         return self::CARRIER_ID;
-    }
-
-    public function ship(array $payload): string
-    {
-        // Make API call
-        return Str::uuid(); // some random string
     }
 
     public function translatePayload(): array
@@ -52,6 +46,5 @@ class UpsExpress implements Carrier
             'length' => 'required|numeric|max:' . UnitsOfMeasurement::fromInch2Cm(self::MAX_LENGTH_INCH),
         ];
     }
-
 
 }

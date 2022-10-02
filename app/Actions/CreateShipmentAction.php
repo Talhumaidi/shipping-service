@@ -11,8 +11,7 @@ class CreateShipmentAction
     {
         return Shipment::create([
             'carrier_id' => $carrier->getCarrierId(),
-            'package_id' => $carrier->ship($carrier->translatePayload())
+            'package_id' => $carrier->ship()
         ]);
     }
-
 }
