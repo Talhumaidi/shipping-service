@@ -6,20 +6,29 @@ use App\DTO\CarrierPayloadDto;
 
 class CarrierResolver
 {
-    protected $carriersMapping = [
-        'fedex_air' => FedexAir::class,
-        'fedex_groud' => FedexGroud::class,
-        'ups_express' => UpsExpress::class,
-        'ups_2_day' => Ups2Day::class
-    ];
-
-    public function __construct(string $carrier_id)
+    public function __construct(?string $carrier_id)
     {
         $this->carrier_id = $carrier_id;
     }
 
-    public function resolve(CarrierPayloadDto $carrierPayloadDto): Carrier
+    public static function carriersIdsMapping(): array
     {
-        return new $this->carriersMapping[$this->carrier_id]($carrierPayloadDto);
+        return [
+            'fedex_air' => FedexAir::class,
+            'fedex_groud' => FedexGroud::class,
+            'ups_express' => UpsExpress::class,
+            'ups_2_day' => Ups2Day::class
+        ];
+    }
+
+    public function resolve(CarrierPayloadDto $carrierPayloadDto): ?Carrier
+    {
+        $carriersIdsMapping = self::carriersIdsMapping();
+
+        if (! $this->carrier_id || ! isset($carriersIdsMapping[$this->carrier_id])) {
+            return null;
+        }
+
+        return new $carriersIdsMapping[$this->carrier_id]($carrierPayloadDto);
     }
 }

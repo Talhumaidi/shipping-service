@@ -10,36 +10,17 @@ use Illuminate\Validation\Validator;
 
 class ShipmentRequest extends FormRequest
 {
-    protected Carrier $carrier;
+    protected ?Carrier $carrier;
 
     public function rules(): array
     {
-        return [
-            'carrier_id' => 'required|string|in:fedex_air,fedex_groud,ups_express,ups_2_day',
-            'width' => ['required', 'numeric'],
-            'length' => ['required', 'numeric'],
-            'height' => ['required', 'numeric']
-        ];
+        return array_merge([
+            'carrier_id' => 'required|string|in:' . implode(',', array_keys(CarrierResolver::carriersIdsMapping()))
+        ], optional($this->carrier())->validationRules() ?: []
+        );
     }
 
-    /**
-     * Configure the validator instance.
-     *
-     * @param  \Illuminate\Validation\Validator  $validator
-     * @return void
-     */
-    public function withValidator($validator)
-    {
-        $validator->after(function ($validator) {
-            if ($validator->failed()) {
-                return;
-            }
-            \Illuminate\Support\Facades\Validator::make(...$this->carrier()->validationRules())
-                ->validate();
-        });
-    }
-
-    public function carrier(): Carrier
+    public function carrier(): ?Carrier
     {
         if (! isset($this->carrier)) {
             $this->carrier = (new CarrierResolver($this->input('carrier_id')))
