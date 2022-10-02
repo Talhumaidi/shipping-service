@@ -8,7 +8,7 @@ interface Carrier
 {
     function __construct(CarrierPayloadDto $carrierPayloadDto);
 
-    function validatePayload();
+    function validationRules(): array;
 
     function translatePayload(): array;
 

@@ -29,12 +29,7 @@ class Shipment extends Model
 
     public static function makeShipment(Carrier $carrier)
     {
-        $carrier->validatePayload();
 
-        return self::create([
-            'carrier_id' => $carrier->getCarrierId(),
-            'package_id' => $carrier->ship($carrier->translatePayload())
-        ]);
     }
 
 }
