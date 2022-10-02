@@ -83,10 +83,10 @@ Now our database is ready and the application is hosted on `0.0.0.0:8000`
       "message": "The given data was invalid.",
       "errors": {
       "width": [
-      "The width may not be greater than 30.48 cm"
+      "The width must not be greater than 30.48"
       ],
       "length": [
-      "The length may not be greater than 45.72 cm"
+      "The length must not be greater than 45.72"
       ]
       }
       }`
