@@ -8,11 +8,11 @@ interface Carrier
 {
     function __construct(CarrierPayloadDto $carrierPayloadDto);
 
-    function validate();
+    function validatePayload();
 
     function translatePayload(): array;
 
-    function ship(): string;
+    function ship(array $payload): string;
 
     function getCarrierId(): string;
 }

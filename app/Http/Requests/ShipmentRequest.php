@@ -2,6 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Carriers\Carrier;
+use App\Carriers\CarrierResolver;
+use App\DTO\CarrierPayloadDto;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ShipmentRequest extends FormRequest
@@ -14,5 +17,16 @@ class ShipmentRequest extends FormRequest
             'length' => ['required', 'numeric'],
             'height' => ['required', 'numeric']
         ];
+    }
+
+    public function carrier(): Carrier
+    {
+        return (new CarrierResolver($this->input('carrier_id')))
+            ->resolve(
+                (new CarrierPayloadDto())
+                    ->setHeight($this->input('height'))
+                    ->setLength($this->input('length'))
+                    ->setWidth($this->input('width'))
+            );
     }
 }

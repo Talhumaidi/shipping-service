@@ -26,11 +26,8 @@ class Ups2Day implements Carrier
         return self::CARRIER_ID;
     }
 
-    public function ship(): string
+    public function ship(array $payload): string
     {
-        $this->validate();
-        $payload = $this->translatePayload();
-
         // Make API call
         return Str::uuid(); // some random string
     }
@@ -47,7 +44,7 @@ class Ups2Day implements Carrier
         ];
     }
 
-    public function validate()
+    public function validatePayload()
     {
         Validator::validate([
             'width' => UnitsOfMeasurement::fromCm2Inch($this->carrierPayloadDto->getWidth()),
