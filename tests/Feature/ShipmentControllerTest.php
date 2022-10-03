@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Carriers\Carrier;
 use App\Carriers\FedexAir;
 use App\Carriers\FedexGroud;
 use App\Carriers\Ups2Day;
@@ -94,9 +95,9 @@ class ShipmentControllerTest extends TestCase
 
         $this->post('/api/shipment', [
             'carrier_id' => 'ups_express',
-            'width' => UnitsOfMeasurement::fromInch2Cm(UpsExpress::MAX_WIDTH_INCH) + 1,
-            'length' => UnitsOfMeasurement::fromInch2Cm(UpsExpress::MAX_LENGTH_INCH),
-            'height' => UnitsOfMeasurement::fromInch2Cm(UpsExpress::MAX_HEIGHT_INCH),
+            'width' => UnitsOfMeasurement::fromInch2Cm(Carrier::MAX_WIDTH_INCH) + 1,
+            'length' => UnitsOfMeasurement::fromInch2Cm(Carrier::MAX_LENGTH_INCH),
+            'height' => UnitsOfMeasurement::fromInch2Cm(Carrier::MAX_HEIGHT_INCH),
         ]);
     }
 
@@ -107,9 +108,9 @@ class ShipmentControllerTest extends TestCase
 
         $this->post('/api/shipment', [
             'carrier_id' => 'ups_2_day',
-            'width' => UnitsOfMeasurement::fromInch2Cm(Ups2Day::MAX_WIDTH_INCH),
-            'length' => UnitsOfMeasurement::fromInch2Cm(Ups2Day::MAX_LENGTH_INCH),
-            'height' => UnitsOfMeasurement::fromInch2Cm(Ups2Day::MAX_HEIGHT_INCH) + 5,
+            'width' => UnitsOfMeasurement::fromInch2Cm(Carrier::MAX_WIDTH_INCH),
+            'length' => UnitsOfMeasurement::fromInch2Cm(Carrier::MAX_LENGTH_INCH),
+            'height' => UnitsOfMeasurement::fromInch2Cm(Carrier::MAX_HEIGHT_INCH) + 5,
         ]);
     }
 
@@ -120,9 +121,9 @@ class ShipmentControllerTest extends TestCase
 
         $this->post('/api/shipment', [
             'carrier_id' => 'fedex_air',
-            'width' => UnitsOfMeasurement::fromInch2Cm(FedexAir::MAX_WIDTH_INCH),
-            'length' => UnitsOfMeasurement::fromInch2Cm(FedexAir::MAX_LENGTH_INCH),
-            'height' => UnitsOfMeasurement::fromInch2Cm(FedexAir::MAX_HEIGHT_INCH) + 1,
+            'width' => UnitsOfMeasurement::fromInch2Cm(Carrier::MAX_WIDTH_INCH),
+            'length' => UnitsOfMeasurement::fromInch2Cm(Carrier::MAX_LENGTH_INCH),
+            'height' => UnitsOfMeasurement::fromInch2Cm(Carrier::MAX_HEIGHT_INCH) + 1,
         ]);
     }
 }
