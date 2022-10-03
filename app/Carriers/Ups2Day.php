@@ -14,13 +14,6 @@ class Ups2Day extends Carrier
     const MAX_LENGTH_INCH = 18;
     const MAX_HEIGHT_INCH = 8;
 
-    protected CarrierPayloadDto $carrierPayloadDto;
-
-    public function __construct(CarrierPayloadDto $carrierPayloadDto)
-    {
-        $this->carrierPayloadDto = $carrierPayloadDto;
-    }
-
     public function getCarrierId(): string
     {
         return self::CARRIER_ID;
@@ -46,6 +39,4 @@ class Ups2Day extends Carrier
             'length' => 'required|numeric|max:' . UnitsOfMeasurement::fromInch2Cm(self::MAX_LENGTH_INCH),
         ];
     }
-
-
 }

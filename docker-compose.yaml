@@ -27,7 +27,7 @@ services:
     command: --init-file /data/application/init.sql
     volumes:
       - ./init.sql:/data/application/init.sql
-      # - ./storage/dbdata:/var/lib/mysql
+#      - ./storage/dbdata:/var/lib/mysql
     environment:
       MYSQL_DATABASE: shipping_service
       MYSQL_ROOT_PASSWORD: root

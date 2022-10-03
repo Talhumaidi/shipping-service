@@ -7,7 +7,12 @@ use Illuminate\Support\Str;
 
 abstract class Carrier
 {
-    abstract function __construct(CarrierPayloadDto $carrierPayloadDto);
+    protected CarrierPayloadDto $carrierPayloadDto;
+
+    public function __construct(CarrierPayloadDto $carrierPayloadDto)
+    {
+        $this->carrierPayloadDto = $carrierPayloadDto;
+    }
 
     abstract function validationRules(): array;
 
@@ -24,5 +29,4 @@ abstract class Carrier
 
         return Str::uuid();
     }
-
 }
